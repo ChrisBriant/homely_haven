@@ -1,0 +1,91 @@
+<!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard -->
+
+<div class="backdrop email-dialog backdrop-hidden"></div>
+    
+<div class="modal email-dialog modal-hidden">
+    <div class="modal-body">
+        <p>Add email addresses seperated by semicolons.</p>
+        <textarea id="message-text" name="message_text" cols="40" rows="10" placeholder="Type email addresses of friends here, seperated by semicolons." required="" id="email-addresses"></textarea>
+        {% include 'capcha.html' %}
+        <p id="response-text">
+            <!-- inject message after sending emails -->
+        </p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-small submit-btn" >Send</button>
+            <button type="button" class="btn btn-primary btn-small" onclick="cancelEmail()">Cancel</button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    let processing = false;
+    let backdrop = document.querySelector('.backdrop.email-dialog');
+    let modal = document.querySelector('.modal.email-dialog');
+    let responseText = document.querySelector('#response-text');
+    
+
+
+    const sendToEmails = () => {
+        if(!processing) {
+            processing = true;
+            responseText.innerHTML = '';
+
+            let payload = new FormData();
+            payload.append('emails',document.querySelector('#message-text').value);
+
+            fetch(`{{ BASE_URL }}/calendar/sendbyemail/{{ calendar.id }}/`, {
+                method: 'POST',
+                mode: 'cors',
+                body: payload,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            })
+            .then(response => response.json())
+            .then( async data => {
+                if(data.success) {
+                    responseText.innerHTML = 'Your link will be sent to any valid email addresses you have listed.';
+                    //close the dialog
+                    setTimeout(() => {
+                        backdrop.classList.add('backdrop-hidden');
+                        modal.classList.add('modal-hidden');
+                        responseText.innerHTML = '';
+                        processing = false;
+                    },3000);
+                } else {
+                    responseText.innerHTML= data.message;
+                }
+            }).catch(err => {
+                console.log(err);
+            }); 
+
+        }
+    }
+
+    const cancelEmail = () => {
+        backdrop.classList.add('backdrop-hidden');
+        modal.classList.add('modal-hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitBtn = document.querySelector('.submit-btn');
+        const capchaInput = document.querySelector('#capcha-input');
+
+        submitBtn.addEventListener('click', (evt) => {
+            responseText.innerHTML = '';
+            //Check the capcha
+            if(capchaInput.value === valString) {
+                sendToEmails();
+            } else {
+                const capchaError = `
+                    <div class="alert alert-danger alert-dismissable">
+                        <p>The code you have entered is icorrect, please try again or refresh to generate a new one.</p>
+                    </div>
+                `
+                responseText.innerHTML = capchaError;
+            }   
+        });
+    });
+    
+</script>

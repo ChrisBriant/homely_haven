@@ -1,0 +1,24 @@
+<!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard -->
+
+<div class="backdrop yesno-dialog backdrop backdrop-hidden"></div>
+    
+<div class="modal yesno-dialog modal modal-hidden">
+    <div class="modal-body">
+        <p>Are you sure you want to delete?</p>
+        <div class="btn-group">
+            <button id="yes-button" type="button" class="btn btn-primary btn-small">Yes</button>
+            <button type="button" class="btn btn-primary btn-small" onclick="noAction()">No</button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    const noAction = () => {
+        //close the dialog
+        let backdrop = document.querySelector('.backdrop.yesno-dialog');
+        let modal = document.querySelector('.modal.yesno-dialog');
+        backdrop.classList.add('backdrop-hidden');
+        modal.classList.add('modal-hidden');
+    }
+</script>

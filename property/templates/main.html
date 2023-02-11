@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Advent Calendar</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Advent calendar creation">
+    <meta name="keywords" content="calendar,advent,christmas">
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/custom/css/style.css' %}" type="text/css">
+</head>
+
+<style>
+    .hero-area {
+        background: url("{%static 'custom/img/hero_5.jpg'%}") no-repeat center center/contain;
+        height: 95vh;
+        background-color: #e2dacd;
+    }
+</style>
+
+<body>
+    <header>
+        {% if request.user.id %}
+            {% include 'navauthed.html' %}
+        {% else %}
+            {% include 'navunauthed.html' %}
+        {% endif %}
+        {% if request.resolver_match.url_name == 'home' %}
+            <!-- hero  -->
+            <div class="hero-area">
+
+            </div>
+        {% endif %}
+    </header>
+    <main>
+        <div class="page-content">
+            {% include 'messages.html' %}
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    <footer>
+        <p>Homely Haven &copy; {% now "Y" %}</p>
+    </footer>
+</body>
+
+</html>

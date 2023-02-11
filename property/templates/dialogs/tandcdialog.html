@@ -1,0 +1,23 @@
+<div class="backdrop tandc-dialog backdrop backdrop-hidden"></div>
+    
+<div class="modal tandc-dialog modal modal-hidden">
+    <div class="modal-body">
+        <h1>Terms and Conditions</h1>
+
+        {% include 'dialogs/termsandconditions.html' %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-small" onclick="agreeAction()">I Agree</button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    const agreeAction = () => {
+        //close the dialog
+        let backdrop = document.querySelector('.backdrop.tandc-dialog');
+        let modal = document.querySelector('.modal.tandc-dialog');
+        backdrop.classList.add('backdrop-hidden');
+        modal.classList.add('modal-hidden');
+    }
+</script>

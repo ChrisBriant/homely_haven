@@ -1,0 +1,198 @@
+<div id="calendar">
+    <div class="calendar-panel">
+        <div class="selectors">
+            <div id="monthSelector">
+                <button id="prevMonth" class="btn btn-sm chevron left"></button>
+                <span id="monthName">Month</span>
+                <button id="nextMonth" class="btn btn-sm chevron right"></button>
+            </div>
+            <div id="yearSelector">
+                <button id="prevYear" class="btn btn-sm chevron left"></button>
+                <span id="yearNumber">Year</span>
+                <button id="nextYear" class="btn btn-sm chevron right"></button>
+            </div>
+        </div>
+        <div id="calendarDays">
+            <!-- Days of the week here -->
+        </div>
+    </div>
+    <div class="slot-panel">
+        <p><strong>Select a date to display the available slots</strong></p>
+    </div>
+
+</div>
+
+<script>
+    //HELPER FUNCTIONS
+    function clearAndAddSelected(slots,clickedSlot) {
+        //clear
+        slots.forEach(slot => {
+            slot.classList.remove('selected');
+        });
+        clickedSlot.classList.add('selected');
+    }
+
+    let selectedProperty = 0;
+    let selectedSlot = 0;
+    let dateToView = '';
+    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    // Get current date
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth();
+    var currentYear = currentDate.getFullYear();
+
+    // Get actual date,month,year and day
+    var actualDate = new Date();
+    var actualMonth = currentDate.getMonth();
+    var actualYear = currentDate.getFullYear();
+    var actualDay = currentDate.getDate();
+
+    // Set current month and year in the selectors
+    document.getElementById("monthName").innerHTML = monthNames[currentMonth];
+    document.getElementById("yearNumber").innerHTML = currentYear;
+
+    // Function to move to the next month
+    function nextMonth() {
+        currentMonth++;
+        if(currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        document.getElementById("monthName").innerHTML = monthNames[currentMonth];
+        document.getElementById("yearNumber").innerHTML = currentYear;
+        populateDays();
+    }
+
+    // Function to move to the previous month
+    function prevMonth() {
+        currentMonth--;
+        if(currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        document.getElementById("monthName").innerHTML = monthNames[currentMonth];
+        document.getElementById("yearNumber").innerHTML = currentYear;
+        populateDays();
+    }
+
+    // Function to move to the next year
+    function nextYear() {
+        currentYear++;
+        document.getElementById("yearNumber").innerHTML = currentYear;
+        populateDays();
+    }
+
+    // Function to move to the previous year
+    function prevYear() {
+        currentYear--;
+        document.getElementById("yearNumber").innerHTML = currentYear;
+        populateDays();
+    }
+
+    // Function to populate the days of the month in the calendar
+    function populateDays() {
+        // Get the first day of the month
+        var firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+        var firstDayOfWeek = firstDayOfMonth.getDay();
+
+        // Get the last day of the month
+        var lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+        var lastDayOfWeek = lastDayOfMonth.getDay();
+
+        // Get the total number of days in the month
+        var totalDays = lastDayOfMonth.getDate();
+
+        // Generate the HTML for the days of the week
+        var html = `
+        <div class="day-name"><p>Sun</p></div>
+        <div class="day-name"><p>Mon</p></div>
+        <div class="day-name"><p>Tue</p></div>
+        <div class="day-name"><p>Wed</p></div>
+        <div class="day-name"><p>Thu</p></div>
+        <div class="day-name"><p>Fri</p></div>
+        <div class="day-name"><p>Sat</p></div>
+        `;
+        for(var i = 0; i < firstDayOfWeek; i++) {
+            html += '<div class="day prevmonth"><p>&nbsp;</p></div>';
+        }
+        for(var i = 1; i <= totalDays; i++) {
+            //Calculate if we are behind
+            // console.log('actual', actualYear, actualMonth, actualDay);
+            // console.log('current', currentYear,currentMonth, i);
+            if(new Date().getTime() > new Date(currentYear,currentMonth,i).getTime()) {
+                console.log('less');
+                html += '<div class="day spentday"><p>' + i + '</p></div>';
+            } else {
+                console.log('more');
+                html += '<div class="day currmonth"><p>' + i + '</p></div>';  
+            }
+            //console.log('more', new Date().getTime(),currentYear,currentMonth,i, new Date(currentYear, currentMonth,i).getTime() );
+            
+        }
+        for(var i = lastDayOfWeek + 1; i < 7; i++) {
+            html += '<div class="day nextmonth"><p>&nbsp;</p></div>';
+        }
+
+        // Set the HTML in the calendar
+        document.getElementById("calendarDays").innerHTML = html;
+        let clickableDays = document.querySelectorAll('.day.currmonth');
+        clickableDays.forEach(day => {
+            day.addEventListener('click',(evt) => {
+                clearAndAddSelected(clickableDays,evt.currentTarget);
+                // console.log(
+                //     'Clicked',
+                //     `${currentYear}-${currentMonth+1}-${parseInt(event.currentTarget.innerHTML)}`,
+                //     selectedProperty
+                // );
+                dateToView = `${currentYear}-${currentMonth+1}-${parseInt(event.currentTarget.querySelector('p').innerHTML)}`;
+
+                const payload = {
+                    'dateToView': dateToView,
+                    'propertyId' : selectedProperty
+                }
+                fetch(`{{ BASE_URL }}/getavailableslots/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body : JSON.stringify(payload)
+                }).then(response => response.json())
+                .then( async data => {
+                    if(data) {
+                        const slotPanel = document.querySelector('.slot-panel');
+                        let slotHtml = '';
+                        data.forEach(slot => {
+                            slotHtml += `<div slot-id="${slot.id}" class="slot"><p>${slot.startTime}</p><p>${slot.endTime}</p></div>`;
+                        });
+                        slotPanel.innerHTML = slotHtml;
+                        const clickableSlots = document.querySelectorAll('.slot');
+                        clickableSlots.forEach(clickableSlot => {
+                            clickableSlot.addEventListener('click', evt => {
+                                console.log('clicked');
+                                const clickedSlot = evt.currentTarget;
+                                clearAndAddSelected(clickableSlots, clickedSlot);
+                                selectedSlot = parseInt(clickedSlot.getAttribute('slot-id'));
+                                console.log('Selected slot', selectedSlot);
+                            });
+                        });
+
+                        console.log('Data', data);
+                    }
+                }).catch(err => console.log('error',err));
+            });
+        });
+        
+    }
+
+    // Event listeners for month and year selectors
+    document.getElementById("prevMonth").addEventListener('click', prevMonth);
+    document.getElementById("nextMonth").addEventListener('click', nextMonth);
+    document.getElementById("prevYear").addEventListener('click', prevYear);
+    document.getElementById("nextYear").addEventListener('click', nextYear);
+
+    // Populate the calendar with the current month
+    populateDays();
+
+</script>

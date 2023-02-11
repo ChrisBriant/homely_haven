@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div  class="auth-dialog">
+    <h1>Forgot Password</h1>
+    <p><strong>Enter your email address below and we will send you a reset password link.</strong></p>
+    <form action=""  autocomplete="on" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">{{ form.email.label }}</label>
+            {{ form.email }}
+        </div>
+        <div class="btn-group">
+            <button id="submit-register" class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

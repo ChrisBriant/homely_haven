@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-4 justify-content-center pagination">
+        {% if items.has_previous %}
+            <a href="/search/1/?search={{ search_str }}">&laquo; first</a>
+            <a href="/search/{{ items.previous_page_number }}/?search={{ search_str }}">previous</a>
+        {% endif %}
+    </div>
+    <div class="col-md-4 justify-content-center pagination">
+        <span class="current">
+            Page {{ items.number }} of {{ items.paginator.num_pages }}.
+        </span>
+    </div>
+    <div class="col-md-4 justify-content-center pagination">
+        {% if items.has_next %}
+            <a href="/search/{{ items.next_page_number }}/?search={{ search_str }}">next</a>
+            <a href="/search/{{ items.paginator.num_pages }}/?search={{ search_str }}">last &raquo;</a>
+        {% endif %}
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+<div class="backdrop backdrop-hidden"></div>
+    
+<div class="modal modal-hidden success-message-modal">
+    <div class="modal-body">
+        <h1>Success!</h1>
+        <p>You have successfully booked the slot and will receive an email with confirmation.</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-small" onclick="noActionForSuccess()">Ok</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const noActionForSuccess = () => {
+        //close the dialog
+        backdrop.classList.add('backdrop-hidden');
+        successMessageModal.classList.add('modal-hidden');
+    }
+</script>

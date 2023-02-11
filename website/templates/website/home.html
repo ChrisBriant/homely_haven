@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+
+{% block content %}
+    <section id="about">
+        <h1>About</h1>
+        <div class="presentation-panel">
+            <h2>Welcome Home!</h2>
+            <p>Homely Haven is a fiticious UK based estate agent.</p>
+            <p>We offer a personalized customer service, competitive pricing, and an easy-to-use online platform for searching, selecting, and purchasing properties. We also provide helpful advice to our customers to ensure you find the perfect home.</p> 
+        </div>
+    </section>
+    <section id="latest">
+        <h1>Latest</h1>
+        <div class="presentation-panel">
+            {{ properties|length }}
+            {% include 'widgets/carousel.html' %}
+        </div>
+    </section>
+{% endblock %}

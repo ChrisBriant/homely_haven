@@ -1,0 +1,30 @@
+<!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard -->
+
+<div class="backdrop backdrop-hidden"></div>
+    
+<div class="modal modal-hidden">
+    <div class="modal-body">
+        <p>Copy the link below to send to friends.</p>
+        <input type="text" value="{{ BASE_URL }}/calendar/public/viewcalendar/{{ calendar.id }}/" id="copy-link" readonly />
+        <!-- <p><small id="copied-message"></small></p> -->
+        <button type="button" class="btn btn-primary btn-small" onclick="copyLink()">Copy</button>
+    </div>
+</div>
+
+<script>
+    const copyLink = () => {
+        const copyText = document.querySelector('#copy-link');
+
+        //const copiedMessage = document.querySelector('#copied-message');
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+        //close the dialog
+        let backdrop = document.querySelector('.backdrop');
+        let modal = document.querySelector('.modal');
+        backdrop.classList.add('backdrop-hidden');
+        modal.classList.add('modal-hidden');
+    }
+</script>

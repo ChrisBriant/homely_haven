@@ -1,0 +1,78 @@
+<!-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard -->
+
+<div class="backdrop backdrop-hidden"></div>
+    
+<div class="modal booking-modal modal-hidden">
+    <div class="modal-body">
+        <h1>Book a Viewing</h1>
+        {% include './calendar.html' %}
+        <div class="btn-group">
+            <button id="yes-button" type="button" class="btn btn-primary btn-small">Book</button>
+            <button type="button" class="btn btn-primary btn-small" onclick="noActionForBooking()">Cancel</button>
+        </div>
+        <div class="error-box">&nbsp;</div>
+    </div>
+</div>
+
+<script>
+    const calendarPanel = document.querySelector('.calendar-panel');
+    const slotPanel = document.querySelector('.slot-panel');
+    const errorBox = document.querySelector('.error-box');
+    //const backdrop = document.querySelector('.backdrop');
+    //const modal = document.querySelector('.modal');
+
+    const noActionForBooking = () => {
+        //close the dialog
+        backdrop.classList.add('backdrop-hidden');
+        modal.classList.add('modal-hidden');
+    }
+
+    //Handle booking
+    const bookBtn = document.querySelector('#yes-button');
+    bookBtn.addEventListener('click', evt => {
+        //Error handling
+        if(dateToView === '') {
+            calendarPanel.classList.add('highlight-error');
+            errorBox.innerHTML='Please select a viewing date.';
+            return;
+        }
+        if(selectedSlot === 0) {
+            slotPanel.classList.add('highlight-error');
+            errorBox.innerHTML='Please select a slot.';
+            return;
+        }
+
+        const payload = {
+            viewingDate : dateToView,
+            propertyId : selectedProperty,
+            slotId : selectedSlot
+        };
+        fetch(`{{ BASE_URL }}/bookslot/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body : JSON.stringify(payload)
+        }).then(response => response.json())
+        .then( async data => {
+            if(data) {
+                console.log('Data', data);
+            }
+            if(data) {
+                if(data.success) {
+                    //backdrop.classList.add('backdrop-hidden');
+                    modal.classList.add('modal-hidden');
+                    successMessageModal.classList.remove('modal-hidden');
+                }
+            }
+        }).catch(err => console.log('error',err));
+
+        //Clear the variables
+        viewingDate = '';
+        propertyId = 0;
+        selectedSlot = 0;
+        slotPanel.classList.remove('highlight-error');
+        calendarPanel.classList.remove('highlight-error');
+    });
+</script>

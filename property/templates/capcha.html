@@ -1,0 +1,62 @@
+<div class="canvas-area">
+    <canvas id="canvas"></canvas>
+    <input id="capcha-input" type="text" placeholder="Enter the characters above." />
+</div>
+
+
+<script>
+    const canvasWidth = 300;
+    const canvasHeight = 70;
+    const fontSize = 10;
+    const fontList = ['Arial','Verdana','Tahoma','Trebuchet','Times New Roman','Georgia','Garamond','Courier']
+
+    let valString = '';
+
+    //const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabdeghjnqrty0123456789';
+
+    const randomChar = () => {
+        // Pick character randomly
+        str = chars.charAt(Math.floor(Math.random() * chars.length));
+        return str;
+
+    };
+
+    const drawCharacter = (x,y,color,size,text,rotation,font) => {
+        let center = 50;
+
+        ctx.save()
+        ctx.translate(center+x,center);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.translate((center*-1) - x,center*-1);
+        ctx.font = `${size}px ${font}`;
+        ctx.fillStyle = color;
+        ctx.fillText(text, x, y);
+        ctx.restore();
+    }
+
+
+    const canvas = document.querySelector('#canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    let rot = Math.floor(Math.random() * 36)
+
+    for(let i=0;i<6;i++) {
+        const randChar = randomChar();
+        const rot = Math.floor(Math.random() * 36);
+        const size = Math.floor(Math.random() * 46) + 20;
+        const font = fontList[Math.floor(Math.random() * fontList.length)];
+        valString+= randChar;
+        drawCharacter(i*50,60,'#f55442',size,randChar,rot,font);
+    }
+
+    for(let i=0;i<3;i++) {
+        ctx.moveTo(Math.floor(Math.random() * 46) , Math.floor(Math.random() * 46) );
+        ctx.lineTo(Math.floor(Math.random() * canvasWidth) + canvasWidth -50 , Math.floor(Math.random() * canvasHeight - 50));
+        ctx.stroke(); 
+    }
+
+</script>

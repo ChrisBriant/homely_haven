@@ -1,0 +1,111 @@
+<div class="carousel">
+    {% if properties|length > 0 %}
+        <div class="slides" >
+            {% for property in properties %}
+                <div class="slide">
+                    <img src="{{ MEDIA_URL }}/{{ property.picture }}" alt="{{ property.address_line_one }}">
+                    <div class="property-title-banner">
+                        <p>{{ property.address_line_one }}</p>
+                    </div>
+                    <!-- <p>{{ property.address_line_one }}</p> -->
+                </div>
+            {% endfor %}
+            <div class="slide">
+                <img src="{{ MEDIA_URL }}/{{ properties.first.picture }}" alt="{{ properties.first.address_line_one }}">
+                <div class="property-title-banner">
+                    <p>{{ properties.first.address_line_one }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <button class="previous-button">Previous</button>
+    <button class="next-button">Next</button>
+</div>
+
+<style>
+    slides {
+        width: {{ slides_total_length }};
+    }
+
+    /* @keyframes slides {
+        0% {
+            transform: translateX(0px);
+        }
+        100% {
+            transform: translateX(-{{ slides_total_length }}px);
+        }
+    } */
+
+    @keyframes slides {
+        0% {
+            transform: translateX(0px);
+        }
+        20% {
+            transform: translateX(-500px);
+        }
+        40% {
+            transform: translateX(-1000px);
+        }
+        60% {
+            transform: translateX(-1500px);
+        }
+        80% {
+            transform: translateX(-2000px);
+        }
+        100% {
+            transform: translateX(-{{ slides_total_length }}px);
+        }
+    }
+</style>
+
+  <script>
+    const slides = document.querySelector(".slides");
+    const previousButton = document.querySelector(".previous-button");
+    const nextButton = document.querySelector(".next-button");
+
+    let index = 0;
+
+    previousButton.addEventListener("click", () => {
+        index--;
+        if (index < 0) {
+            index = slides.children.length - 1;
+        }
+        slides.style.transform = `translateX(-${index * 500}px)`;
+    });
+
+    nextButton.addEventListener("click", () => {
+        index++;
+        if (index === slides.children.length) {
+            index = 0;
+        }
+        slides.style.transform = `translateX(-${index * 500}px)`;
+        slides.style.animation = 'none';
+        setTimeout(() => {
+            slides.style.transform = `translateX(-${index +1 * 500}px)`;
+            slides.style.animation = 'slides 12s infinite'
+            
+        },3000);
+    });
+
+    // let element = document.querySelector(".slides");
+
+    // // Set the initial position of the element
+    // element.style.left = 0;
+
+    // // Set the animation duration and timing function
+    // element.style.transition = "1s ease-in-out";
+
+    // // Start the animation loop
+    // let startTime = Date.now();
+    // let animationLoop = () => {
+    //     let currentTime = Date.now();
+    //     let elapsedTime = (currentTime - startTime) / 1000;
+    //     element.style.left = elapsedTime * -100 + "px";
+    //     //console.log('Element', element.offsetWidth);
+    //     //2500
+    //     requestAnimationFrame(animationLoop);
+    // }
+    // animationLoop();
+
+</script>
+  

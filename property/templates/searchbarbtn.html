@@ -1,0 +1,19 @@
+<form id="search-submit" method="post" action="/search/1/">
+    <div class="search-container">
+            {% csrf_token %}   
+            <input type="text" class="search-input" placeholder="Search..." name="search" /> 
+            <button type="submit" class="search-btn"> 
+                {% include 'svg/searchicon.html' %}    
+            </button>
+    </div>
+</form>
+
+<script>
+    // searchBtn = document.querySelector('.search-btn');
+    // searchSubmit = document.querySelector('#search-submit');
+
+    // searchBtn.addEventListener('click', (evt) => {
+    //     console.log('clicked');
+    //     searchSubmit.submit();
+    // });
+</script>

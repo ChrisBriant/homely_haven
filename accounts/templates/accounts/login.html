@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+
+{% block content %}
+<div  class="auth-dialog">
+    <h1>Login</h1>
+    <form action=""  autocomplete="on" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">{{ form.username.label }}</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+        </div>
+        <div class="form-group">
+            <p><small>Forgot your password? click <a href="/accounts/forgot" class="linkonblue">here</a> to reset it.</small></p>
+        </div>
+        <div class="btn-group">
+            <button id="submit-register" class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

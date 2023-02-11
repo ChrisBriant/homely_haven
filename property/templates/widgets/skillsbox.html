@@ -1,0 +1,148 @@
+<div class="form-group">
+    <label for="id_skillsearch">Select Skills:</label>
+    <div class="skills-input">
+        <input id="id_skillsearch" type="text" name="skill_search"/>
+        <div id="skills-list" class="skills-list hidden"><!--INJECT SKILLS HERE--></div>
+    </div>
+</div>
+<div class="skills-selected"><!--INJECT SKILLS HERE--></div>
+<!-- INPUT BELOW IS USED FOR THE FORM SUBMISSION OF SKILLS -->
+<input id="selected-skill-ids" type="text" name="skill_ids"/>
+
+<script>
+    let searchStr = '';
+    let callApiTimer;
+    let foundSkills = [];
+    let selectedSkills = [];
+    let BASE_URL = '{{BASE_URL}}';
+
+
+    const findSkills = (payload) => {
+        console.log('PAYLOAD', payload);
+        return new Promise((resolve,reject) => {
+            fetch(`${BASE_URL}/findskills/`, 
+            {
+                method: "POST",
+                mode: 'cors',
+                body: payload,
+                headers: { 
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            }).then(res => {
+                console.log(res.status);
+                if(res.status === 200) {
+                    return res.json();
+                } else {
+                    return {error:true};
+                }
+                
+            }).then(data => {
+                return resolve(data);
+            })
+            .catch(err => {
+                console.log(err);
+                return resolve({networkError:true});
+            });
+        });
+    }
+
+    const handleSkillSearch = () => {
+        //Elements
+        let skillsList = document.querySelector('#skills-list');
+        skillsList.innerHTML = '';
+        clearTimeout(callApiTimer);
+        //Only hit API if text is more than two and user has finished typing after 1 second
+        if(searchStr.length > 2) {
+            callApiTimer = setTimeout(async function(){
+                let formData = new FormData();
+                formData.append('search', searchStr);
+                foundSkills = await findSkills(formData);
+                console.log('FOUND SKILLS', foundSkills);
+                foundSkills.forEach(async el =>  {
+                    await skillsList.insertAdjacentHTML("beforeend",`
+                        <p id="found_skill_${el.id}">${el.skill}</p>
+                    `);
+                    document.querySelector(`#found_skill_${el.id}`).addEventListener('click', e => {
+                        skillsList.classList.add('hidden');
+                        handleSkillsSelect(e,el.id);
+                    });
+
+                });
+                skillsList.classList.remove('hidden');
+            }, 1000);
+        }
+    }
+
+    const updateSkills = async (skills) => {
+        let skillsSelected = document.querySelector('.skills-selected');
+        skillsSelected.innerHTML = '';
+        let skillIds = document.querySelector('#selected-skill-ids');
+        skillIds.value = '';
+
+        let skillIdsString = '';
+
+        await skills.forEach(async skill => {
+            await skillsSelected.insertAdjacentHTML('beforeend',`
+                <div id="selected-skill-${skill.id}" class="skill-pill">
+                    <span>${skill.skill}</span><span id="remove-skill-${skill.id}" class="remove-skill">X</span>
+                </div>
+            `);
+            
+            skillIdsString += skill.id + ',';
+            //Removal event
+            document.querySelector(`#remove-skill-${skill.id}`).addEventListener('click',el => {
+                el.target.remove();
+                selectedSkills = skills.filter(sk => sk.id !== skill.id);
+                console.log('Skills now', selectedSkills);
+                updateSkills(selectedSkills);
+            });
+        });
+        //Update the field containing the ids
+        skillIds.value = skillIdsString;
+    }
+
+    const handleSkillsSelect = (e,id) => {
+        const selectedSkill = foundSkills.filter(skill => skill.id === parseInt(id));
+        
+        //Check skill is not already selected
+        const skillInSelected = selectedSkills.filter(skill => skill.id === selectedSkill[0].id)
+        if(skillInSelected.length === 0) {
+            selectedSkills = [...selectedSkills, selectedSkill[0]];
+            updateSkills(selectedSkills);
+        }
+    }
+
+    // const handleRemoveSkill = (e) => {
+    //     const removeId = e.target.id.split('pill-cancel-')[1]; 
+    //     const filteredSelectedSkills = selectedSkills.filter((e) => e.id !== parseInt(removeId));
+    //     selectedSkills = filteredSelectedSkills;
+    //     updateSkills(selectedSkills);
+    // }
+
+    // const cancelSkillSearch = (e) => {
+    //     foundSkills = [];
+    // }
+
+    // const handleAddNewSkill = async (e) => {
+    //     const payload = {
+    //         skill : searchStr
+    //     }
+    //     const newSkill = await addSkill(payload);
+    //     if(!newSkill.error) {
+    //         selectedSkills = [...selectedSkills, newSkill];
+    //         updateSkills(selectedSkills);
+    //     }
+    // }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        document.querySelector('#id_skillsearch').addEventListener('input', (e) => {
+            searchStr = e.target.value;
+            handleSkillSearch();
+        });
+    });
+
+
+</script>
+
+
