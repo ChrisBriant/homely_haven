@@ -62,26 +62,72 @@
     const slides = document.querySelector(".slides");
     const previousButton = document.querySelector(".previous-button");
     const nextButton = document.querySelector(".next-button");
+    let animTimeout = null;
 
     let index = 0;
 
-    previousButton.addEventListener("click", () => {
-        index--;
-        if (index < 0) {
-            index = slides.children.length - 1;
+    previousButton.addEventListener("click", async () => {
+        //console.log('Slides', slides.children.length);
+        const elementRect = slides.getBoundingClientRect();
+        const elementIndex = Math.floor(elementRect.left / 500);
+        console.log((elementIndex * -1) - 1);
+        index = (elementIndex * -1) - 1;
+        if(index === -1) {
+            //Remove last slide
+            lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
+            let currentSlide =await slides.children[slides.children.length-1].cloneNode(true);
+            slides.insertBefore(currentSlide,slides.children[0]);
+            //return;
         }
-        slides.style.transform = `translateX(-${index * 500}px)`;
+
+        // index--;
+        // if (index < 0) {
+        //     index = slides.children.length - 1;
+        // }
+        // slides.style.transform = `translateX(-${index * 500}px)`;
     });
 
-    nextButton.addEventListener("click", () => {
-        index++;
-        if (index === slides.children.length) {
-            index = 0;
+    nextButton.addEventListener("click", async () => {
+        // index++;
+        // if (index === slides.children.length) {
+        //     index = 0;
+        // }
+        //console.log(3000 - slides.getBoundingClientRect().x);
+        console.log('Slides', slides.children.length);
+        const elementRect = slides.getBoundingClientRect();
+        const elementIndex = Math.floor(elementRect.left / 500);
+        console.log((elementIndex * -1) + 1);
+        index = (elementIndex * -1) + 1;
+        if(index === slides.children.length) {
+            console.log('last slide');
+            return;
         }
-        slides.style.transform = `translateX(-${index * 500}px)`;
+        //slides.style.transform = `translateX(-${index * 500}px)`;
         slides.style.animation = 'none';
-        setTimeout(() => {
-            slides.style.transform = `translateX(-${index +1 * 500}px)`;
+        //Move the slides around to change the order
+        //remove the last slide
+        let currentSlide =await slides.children[index].cloneNode(true);
+        lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
+        if(slides.children[index] === lastSlide) {
+            console.log('The last slide is the same as the current one');
+        }
+        //get the current slide
+        //let slidesCopy = [...slides.children];
+        //remove previous slides and add to the end
+        for(i=0;i<index;i++) {
+            let removedSlide = slides.removeChild(slides.children[i]);
+            slides.append(removedSlide);
+        }
+        //Duplicate the lastslide
+        slides.append(currentSlide);
+        [...slides.children].forEach(slide => {
+            //console.log(slide);
+        });
+        if(animTimeout) {
+             clearTimeout(animTimeout);
+        }
+        animTimeout = setTimeout(() => {
+            //slides.style.transform = `translateX(-${index +1 * 500}px)`;
             slides.style.animation = 'slides 12s infinite'
             
         },3000);

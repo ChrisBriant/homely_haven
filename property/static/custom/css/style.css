@@ -384,7 +384,7 @@ html, body {
 .slides {
     display: flex;
     position: absolute;
-    animation: slides 12s infinite;
+    /* animation: slides 12s infinite; */
 }
 
 .slide {
