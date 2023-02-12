@@ -72,13 +72,26 @@
         const elementIndex = Math.floor(elementRect.left / 500);
         console.log((elementIndex * -1) - 1);
         index = (elementIndex * -1) - 1;
-        if(index === -1) {
+
+        slides.style.animation = 'none';
+        //if(index === -1) {
             //Remove last slide
             lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
             let currentSlide =await slides.children[slides.children.length-1].cloneNode(true);
             slides.insertBefore(currentSlide,slides.children[0]);
             //return;
+        // } else {
+
+        // }
+
+        if(animTimeout) {
+             clearTimeout(animTimeout);
         }
+        animTimeout = setTimeout(() => {
+            //slides.style.transform = `translateX(-${index +1 * 500}px)`;
+            slides.style.animation = 'slides 12s infinite'
+            
+        },3000);
 
         // index--;
         // if (index < 0) {
