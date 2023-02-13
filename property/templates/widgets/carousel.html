@@ -23,9 +23,12 @@
 </div>
 
 <style>
-    slides {
+    .slides {
         width: {{ slides_total_length }};
+        animation: {{ animation_string }};
     }
+
+    
 
     /* @keyframes slides {
         0% {
@@ -36,7 +39,10 @@
         }
     } */
 
-    @keyframes slides {
+    {{ slide_data }}
+    /* @keyframes slides {0% {transform: translateX(0px);}16.666666666666664% {transform: translateX(-500px);}33.33333333333333% {transform: translateX(-1000px);}50.0% {transform: translateX(-1500px);}66.66666666666666% {transform: translateX(-2000px);}83.33333333333334% {transform: translateX(-2500px);}100% { transform: translateX(-3000px);}} */
+
+    /* @keyframes slides {
         0% {
             transform: translateX(0px);
         }
@@ -55,13 +61,16 @@
         100% {
             transform: translateX(-{{ slides_total_length }}px);
         }
-    }
+    } */
+
+
 </style>
 
   <script>
     const slides = document.querySelector(".slides");
     const previousButton = document.querySelector(".previous-button");
     const nextButton = document.querySelector(".next-button");
+    const animationString = '{{animation_string}}';
     let animTimeout = null;
 
     let index = 0;
@@ -89,7 +98,7 @@
         }
         animTimeout = setTimeout(() => {
             //slides.style.transform = `translateX(-${index +1 * 500}px)`;
-            slides.style.animation = 'slides 12s infinite'
+            slides.style.animation = animationString;
             
         },3000);
 
@@ -141,7 +150,7 @@
         }
         animTimeout = setTimeout(() => {
             //slides.style.transform = `translateX(-${index +1 * 500}px)`;
-            slides.style.animation = 'slides 12s infinite'
+            slides.style.animation = animationString;
             
         },3000);
     });

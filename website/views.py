@@ -15,11 +15,34 @@ from propertyadmin.models import *
 from datetime import datetime
 
 def home(request):
-    hot_properties = Property.objects.all().order_by('date_added')[:5]
+    hot_properties = Property.objects.all().order_by('date_added')[:6]
     #Get the total width that the proprties will take and pass to the carousel style to handle the animation
     #style_tag = f'style=width:{(len(hot_properties)-1)*500}px;'
     slides_total_length = len(hot_properties)*500
-    return render(request,'website/home.html',{'properties' : hot_properties,'slides_total_length' : slides_total_length})
+    print(int(slides_total_length / 500))
+    max_slides = int(slides_total_length / 500)
+    animation_string = f'slides {max_slides*6}s infinite'
+    slide_data = '@keyframes slides {'
+    for i in range(0,max_slides):
+        translate = (i*500) * -1
+        if(i > 0):
+            percent = i/max_slides * 100
+        else:
+            percent = 0
+        # slide_data.append({
+        #     'translate' : translate,
+        #     'percent' : percent
+        # })
+        slide_data += f'{percent}% {{transform: translateX({translate}px);}}'
+    slide_data += f'100% {{ transform: translateX(-{slides_total_length}px);}}' + '}'
+    print('slide data', slide_data)
+
+    return render(request,'website/home.html',{
+        'properties' : hot_properties,
+        'slides_total_length' : slides_total_length, 
+        'slide_data' : slide_data,
+        'animation_string' : animation_string
+    })
 
 def search(request,page_no):
     #Will always return the same results for demo purposes
