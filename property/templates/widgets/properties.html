@@ -1,0 +1,18 @@
+{% if properties|length > 0 %}
+<div class="slides" >
+    {% for property in properties %}
+        <div class="slide">
+            <img src="{{ MEDIA_URL }}/{{ property.picture }}" alt="{{ property.address_line_one }}">
+            <div class="property-title-banner">
+                <p>{{ property.address_line_one }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="slide">
+        <img src="{{ MEDIA_URL }}/{{ properties.first.picture }}" alt="{{ properties.first.address_line_one }}">
+        <div class="property-title-banner">
+            <p>{{ properties.first.address_line_one }}</p>
+        </div>
+    </div>
+</div>
+{% endif %}

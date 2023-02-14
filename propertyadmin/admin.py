@@ -9,6 +9,7 @@ class PropertyAdmin(admin.ModelAdmin):
 admin.site.register(Property, PropertyAdmin)
 admin.site.register(Customer)
 admin.site.register(Agent)
+admin.site.register(NewsItem)
 
 
 class SlotAdmin(admin.ModelAdmin):

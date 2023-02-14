@@ -15,9 +15,8 @@ from propertyadmin.models import *
 from datetime import datetime
 
 def home(request):
-    hot_properties = Property.objects.all().order_by('date_added')[:6]
+    hot_properties = Property.objects.all().order_by('date_added')[:5]
     #Get the total width that the proprties will take and pass to the carousel style to handle the animation
-    #style_tag = f'style=width:{(len(hot_properties)-1)*500}px;'
     slides_total_length = len(hot_properties)*500
     print(int(slides_total_length / 500))
     max_slides = int(slides_total_length / 500)
@@ -35,13 +34,13 @@ def home(request):
         # })
         slide_data += f'{percent}% {{transform: translateX({translate}px);}}'
     slide_data += f'100% {{ transform: translateX(-{slides_total_length}px);}}' + '}'
-    print('slide data', slide_data)
-
+    news_articles = NewsItem.objects.all()
     return render(request,'website/home.html',{
         'properties' : hot_properties,
         'slides_total_length' : slides_total_length, 
         'slide_data' : slide_data,
-        'animation_string' : animation_string
+        'animation_string' : animation_string,
+        'news_articles' : news_articles
     })
 
 def search(request,page_no):

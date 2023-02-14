@@ -1,22 +1,6 @@
 <div class="carousel">
-    {% if properties|length > 0 %}
-        <div class="slides" >
-            {% for property in properties %}
-                <div class="slide">
-                    <img src="{{ MEDIA_URL }}/{{ property.picture }}" alt="{{ property.address_line_one }}">
-                    <div class="property-title-banner">
-                        <p>{{ property.address_line_one }}</p>
-                    </div>
-                    <!-- <p>{{ property.address_line_one }}</p> -->
-                </div>
-            {% endfor %}
-            <div class="slide">
-                <img src="{{ MEDIA_URL }}/{{ properties.first.picture }}" alt="{{ properties.first.address_line_one }}">
-                <div class="property-title-banner">
-                    <p>{{ properties.first.address_line_one }}</p>
-                </div>
-            </div>
-        </div>
+    {% if carousel_mode == 'properties' %}
+        {% include './properties.html' %}
     {% endif %}
     <button class="previous-button">Previous</button>
     <button class="next-button">Next</button>
@@ -28,42 +12,7 @@
         animation: {{ animation_string }};
     }
 
-    
-
-    /* @keyframes slides {
-        0% {
-            transform: translateX(0px);
-        }
-        100% {
-            transform: translateX(-{{ slides_total_length }}px);
-        }
-    } */
-
     {{ slide_data }}
-    /* @keyframes slides {0% {transform: translateX(0px);}16.666666666666664% {transform: translateX(-500px);}33.33333333333333% {transform: translateX(-1000px);}50.0% {transform: translateX(-1500px);}66.66666666666666% {transform: translateX(-2000px);}83.33333333333334% {transform: translateX(-2500px);}100% { transform: translateX(-3000px);}} */
-
-    /* @keyframes slides {
-        0% {
-            transform: translateX(0px);
-        }
-        20% {
-            transform: translateX(-500px);
-        }
-        40% {
-            transform: translateX(-1000px);
-        }
-        60% {
-            transform: translateX(-1500px);
-        }
-        80% {
-            transform: translateX(-2000px);
-        }
-        100% {
-            transform: translateX(-{{ slides_total_length }}px);
-        }
-    } */
-
-
 </style>
 
   <script>
@@ -76,45 +25,27 @@
     let index = 0;
 
     previousButton.addEventListener("click", async () => {
-        //console.log('Slides', slides.children.length);
         const elementRect = slides.getBoundingClientRect();
         const elementIndex = Math.floor(elementRect.left / 500);
         console.log((elementIndex * -1) - 1);
         index = (elementIndex * -1) - 1;
 
         slides.style.animation = 'none';
-        //if(index === -1) {
-            //Remove last slide
-            lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
-            let currentSlide =await slides.children[slides.children.length-1].cloneNode(true);
-            slides.insertBefore(currentSlide,slides.children[0]);
-            //return;
-        // } else {
+        lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
+        let currentSlide =await slides.children[slides.children.length-1].cloneNode(true);
+        slides.insertBefore(currentSlide,slides.children[0]);
 
-        // }
 
         if(animTimeout) {
              clearTimeout(animTimeout);
         }
         animTimeout = setTimeout(() => {
-            //slides.style.transform = `translateX(-${index +1 * 500}px)`;
             slides.style.animation = animationString;
             
         },3000);
-
-        // index--;
-        // if (index < 0) {
-        //     index = slides.children.length - 1;
-        // }
-        // slides.style.transform = `translateX(-${index * 500}px)`;
     });
 
     nextButton.addEventListener("click", async () => {
-        // index++;
-        // if (index === slides.children.length) {
-        //     index = 0;
-        // }
-        //console.log(3000 - slides.getBoundingClientRect().x);
         console.log('Slides', slides.children.length);
         const elementRect = slides.getBoundingClientRect();
         const elementIndex = Math.floor(elementRect.left / 500);
@@ -124,7 +55,6 @@
             console.log('last slide');
             return;
         }
-        //slides.style.transform = `translateX(-${index * 500}px)`;
         slides.style.animation = 'none';
         //Move the slides around to change the order
         //remove the last slide
@@ -134,7 +64,6 @@
             console.log('The last slide is the same as the current one');
         }
         //get the current slide
-        //let slidesCopy = [...slides.children];
         //remove previous slides and add to the end
         for(i=0;i<index;i++) {
             let removedSlide = slides.removeChild(slides.children[i]);
@@ -142,38 +71,13 @@
         }
         //Duplicate the lastslide
         slides.append(currentSlide);
-        [...slides.children].forEach(slide => {
-            //console.log(slide);
-        });
         if(animTimeout) {
              clearTimeout(animTimeout);
         }
         animTimeout = setTimeout(() => {
-            //slides.style.transform = `translateX(-${index +1 * 500}px)`;
             slides.style.animation = animationString;
             
         },3000);
     });
-
-    // let element = document.querySelector(".slides");
-
-    // // Set the initial position of the element
-    // element.style.left = 0;
-
-    // // Set the animation duration and timing function
-    // element.style.transition = "1s ease-in-out";
-
-    // // Start the animation loop
-    // let startTime = Date.now();
-    // let animationLoop = () => {
-    //     let currentTime = Date.now();
-    //     let elapsedTime = (currentTime - startTime) / 1000;
-    //     element.style.left = elapsedTime * -100 + "px";
-    //     //console.log('Element', element.offsetWidth);
-    //     //2500
-    //     requestAnimationFrame(animationLoop);
-    // }
-    // animationLoop();
-
 </script>
   

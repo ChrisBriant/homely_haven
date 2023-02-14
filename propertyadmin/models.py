@@ -15,16 +15,17 @@ def image_path_handler(instance, filename):
     print("uploading",instance.__dict__)
     return "property_{id}/{name}{ext}".format(id=instance.id,name=name,ext=ext)
 
+def news_article_uploader(instance, filename):
+    fn, ext = os.path.splitext(filename)
+    return "news_{id}/{name}{ext}".format(id=instance.id,name=name,ext=ext)
+
+
 class District(models.Model):
     code = models.CharField(max_length=5,null=False,unique=True)
     name = models.CharField(max_length=50,null=False)
 
     def __str__(self):
         return self.code
-    
-    # constraints = [
-    #     models.UniqueConstraint(fields=['code'], name='unique_district_code')
-    # ]
 
 class Property(models.Model):
     address_line_one = models.CharField(max_length=100,null=False)
@@ -37,8 +38,6 @@ class Property(models.Model):
 
     def __str__(self):
         return self.address_line_one
-
-
 
 class Slot(models.Model):
     start_time =  models.TimeField(null=False)
@@ -72,18 +71,7 @@ class Viewing(models.Model):
     class Meta:
         unique_together = ('date_of_viewing', 'slot', 'property')
 
-
-# class Tag(models.Model):
-#     tag = models.CharField(max_length=50,unique=True)
-
-#     def __str__(self):
-#         return self.tag
-
-# class WarmPlaceTag(models.Model):
-#     warmplace = models.ForeignKey(WarmPlace,on_delete=models.CASCADE)
-#     tag = models.ForeignKey(Tag,on_delete=models.CASCADE)
-
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(fields=['warmplace','tag'], name='unique_warmplace_tag')
-#         ]
+class NewsItem(models.Model):
+    headline = models.CharField(max_length=50,null=False)
+    article = models.CharField(max_length=500,null=False)
+    picture = models.ImageField(upload_to=image_path_handler,validators=[validate_file],null=True,blank=True)

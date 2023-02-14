@@ -1,0 +1,26 @@
+{% if news_articles|length > 0 %}
+{{ news_articles }}
+<div class="slides" >
+    {% for news_article in news_articles %}
+        <div class="news-slide">
+            <div class="news-image">
+                <img src="{{ MEDIA_URL }}/{{ news_article.picture }}" alt="{{ news_article.headline }}">
+            </div>
+            <div class="news-article">
+                <div class="news-headline">
+                    <p><strong>{{ news_article.headline }}</strong></p>
+                </div>
+                <div class="news-text">
+                    <p>{{ news_article.article }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <!-- <div class="slide">
+        <img src="{{ MEDIA_URL }}/{{ properties.first.picture }}" alt="{{ properties.first.address_line_one }}">
+        <div class="property-title-banner">
+            <p>{{ properties.first.address_line_one }}</p>
+        </div>
+    </div> -->
+</div>
+{% endif %}
