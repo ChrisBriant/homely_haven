@@ -6,6 +6,7 @@ urlpatterns = [
     re_path(r'^search/(?P<page_no>\d+)/$', views.search, name='search'),
     re_path(r'^getavailableslots/$', views.get_availabile_slots, name='getavailableslots'),
     re_path(r'^bookslot/$', views.book_slot, name='bookslot'),
+    re_path(r'^viewproperty/(?P<property_id>\d+)/$',views.view_property,name='viewproperty'),
     #re_path(r'^profile/$', views.profile, name='profile'),
     #re_path(r'^postassignment/$', views.post_assignment, name='postassignment'),
     #re_path(r'^findskills/$', views.skills_search, name='findskills'),

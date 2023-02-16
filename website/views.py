@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 #from accounts.forms import SignInForm
 #from django.http import JsonResponse, HttpResponseRedirect
 #from django.contrib.auth.decorators import login_required
@@ -13,6 +14,7 @@ from .forms import *
 from .models import *
 from propertyadmin.models import *
 from datetime import datetime
+import random
 
 def home(request):
     hot_properties = Property.objects.all().order_by('date_added')[:5]
@@ -53,6 +55,19 @@ def search(request,page_no):
     # for item in page_obj:
     #     print(item.picture)
     return render(request,'website/searchresults.html', {'form' : form,'items':page_obj})
+
+def view_property(request,property_id):
+    try:
+        property = Property.objects.get(id=property_id)
+    except Exception as e:
+        return render(request,'404.html')
+    #Get a random picture
+    print(settings.BASE_DIR)
+    home_images_dir = os.path.join(settings.BASE_DIR,'media/rooms')
+    file_list = [ os.path.join(home_images_dir,f) for f in os.listdir(home_images_dir) if os.path.isfile(os.path.join(home_images_dir, f))]
+    room_src = random.sample(file_list,1)[0]
+    return render(request, 'website/property.html', {'property':property, 'room_src':room_src})
+
 
 @api_view(['POST'])
 def get_availabile_slots(request):

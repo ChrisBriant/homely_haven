@@ -33,6 +33,10 @@ h1 {
     text-align: center;
 }
 
+main {
+    min-height: 78vh;
+}
+
 
 /* Navigation  */
 .navbar {
