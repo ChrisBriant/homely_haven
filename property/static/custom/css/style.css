@@ -98,6 +98,18 @@ main {
     padding: 0px;
 }
 
+.btn-group {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.btn-group .btn {
+    margin: 6px 0;
+}
+
 .btn:hover {
     cursor: pointer;
     background: #46A049;
@@ -153,9 +165,6 @@ main {
     top : -10px
  }
 
- .btn-group {
-    margin: 6px 0;
- }
 
  /* home page  */
 
@@ -197,7 +206,6 @@ main {
 
  /* SECTIONS  */
  section h1 {
-    
     font-size: 48px; 
     font-weight: bold; 
     color: #0072c6; 

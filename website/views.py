@@ -62,10 +62,12 @@ def view_property(request,property_id):
     except Exception as e:
         return render(request,'404.html')
     #Get a random picture
-    print(settings.BASE_DIR)
+    
     home_images_dir = os.path.join(settings.BASE_DIR,'media/rooms')
-    file_list = [ os.path.join(home_images_dir,f) for f in os.listdir(home_images_dir) if os.path.isfile(os.path.join(home_images_dir, f))]
-    room_src = random.sample(file_list,1)[0]
+    file_list = [f for f in os.listdir(home_images_dir) if os.path.isfile(os.path.join(home_images_dir, f))]
+    selected_file = random.sample(file_list,1)[0]
+    room_src = settings.MEDIA_URL + 'rooms/' + selected_file
+    print(request.META['HTTP_REFERER'])
     return render(request, 'website/property.html', {'property':property, 'room_src':room_src})
 
 

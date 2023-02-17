@@ -1,56 +1,72 @@
 {% extends "main.html" %}
 
 {% block content %}
-    {% include './dialogs/bookingsuccessmessage.html' %}
-    {% include './dialogs/bookviewing.html' %}
-    <h1>Your search results</h1>
-    {% if items %}
-        <div class="property-results">
-            {% for item in items %}
-                <div class="property-card">
-                    <div class="property-image">
-                        {% if item.picture %}
-                            <img src="{{ MEDIA_URL }}/{{ item.picture }}" alt="{{ item.address_line_one }}">
-                        {% endif %}
+        {% include './dialogs/bookingsuccessmessage.html' %}
+        {% include './dialogs/bookviewing.html' %}
+        <section id="search-results-section">
+        <h1>Your search results</h1>
+        {% if items %}
+            <div class="property-results">
+                {% for item in items %}
+                    <div class="property-card">
+                        <div class="property-image">
+                            {% if item.picture %}
+                                <img src="{{ MEDIA_URL }}/{{ item.picture }}" alt="{{ item.address_line_one }}">
+                            {% endif %}
+                        </div>
+                        <div class="property-address">
+                            <p>{{ item.address_line_one }}</p>
+                            <p>{{ item.town }}</p>
+                            <p>{{ item.postcode }}</p>
+                        </div>
+                        <div class="property-footer">
+                            <div class="btn-group">
+                                {% if request.user.id %}
+                                    <button id="book-viewing-{{ item.id }}" propertyid="{{ item.id }}" class="btn book-btn">Book Viewing</button>
+                                {% endif %}
+                                <button id="view-property-{{ item.id }}" propertyid="{{ item.id }}" class="btn detail-btn">Detail</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="property-address">
-                        <p>{{ item.address_line_one }}</p>
-                        <p>{{ item.town }}</p>
-                        <p>{{ item.postcode }}</p>
-                    </div>
-                    <div class="property-footer">
-                        {% if request.user.id %}
-                            <button id="book-viewing-{{ item.id }}" propertyid="{{ item.id }}" class="btn book-btn">Book Viewing</button>
-                        {% endif %}
-                        <button class="btn">Detail</button>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
 
-        <script>
-            const bookViewingBtns = document.querySelectorAll('.book-btn');
-            const backdrop = document.querySelector('.backdrop');
-            const successMessageModal = document.querySelector('.modal.success-message-modal');
-            const modal = document.querySelector('.modal.booking-modal');
-            if(bookViewingBtns.length > 0) {
-                bookViewingBtns.forEach(bookViewingBtn => {
-                    bookViewingBtn.addEventListener('click', (evt) => {
-                        console.log('clicked', evt.target.getAttribute('propertyid'));
-                        selectedProperty = parseInt(evt.target.getAttribute('propertyid'));
-                        backdrop.classList.remove('backdrop-hidden');
-                        modal.classList.remove('modal-hidden');    
+
+
+            <script>
+                const bookViewingBtns = document.querySelectorAll('.book-btn');
+                const viewDetailBtns = document.querySelectorAll('.detail-btn');
+                const backdrop = document.querySelector('.backdrop');
+                const successMessageModal = document.querySelector('.modal.success-message-modal');
+                const modal = document.querySelector('.modal.booking-modal');
+                if(bookViewingBtns.length > 0) {
+                    bookViewingBtns.forEach(bookViewingBtn => {
+                        bookViewingBtn.addEventListener('click', (evt) => {
+                            selectedProperty = parseInt(evt.target.getAttribute('propertyid'));
+                            backdrop.classList.remove('backdrop-hidden');
+                            modal.classList.remove('modal-hidden');    
+                        });
                     });
-                });
-            }
+                }
+
+                if(viewDetailBtns.length > 0) {
+                    viewDetailBtns.forEach(viewDetailBtn => {
+                        viewDetailBtn.addEventListener('click', (evt) => {
+                            selectedProperty = parseInt(evt.target.getAttribute('propertyid'));
+                            window.location.href = `/viewproperty/${selectedProperty}`;
+                        });
+                    });
+                }
 
 
-            // document.addEventListener('DOMContentLoaded', () => {
-    
+                
+                // document.addEventListener('DOMContentLoaded', () => {
+        
 
-            // });
-        </script>
-        {% include './paginator.html' %}
-    {% endif %}
+                // });
+            </script>
+            {% include './paginator.html' %}
+        {% endif %}
+    </section>
 {% endblock %}
 

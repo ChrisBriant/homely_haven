@@ -1,9 +1,50 @@
 {% extends "main.html" %}
 
 {% block content %}
+    {% include './dialogs/bookingsuccessmessage.html' %}
+    {% include './dialogs/bookviewing.html' %}
     <section id="property-section">
-        <div class="property-display">
-            <p>This is where the property goes</p>
+        <h1>{{ property.address_line_one }}</h1>
+        <div class="presentation-panel">
+            <div class="property-heading">
+                <h2>{{ property.town }}</h2>
+                <p>{{ property.postcode }}</p>
+            </div>
+            <div class="proprty-picture">
+                <img src="{{ room_src }}" alt="{{ property.address_line_one }}">
+            </div>
+            <div class="property-footer">
+                <div class="btn-group">
+                    {% if request.META.HTTP_REFERER %}
+                        <button id="back" class="btn back-btn">Back</button>
+                    {% endif %}
+                    {% if request.user.id %}
+                        <button id="book-viewing-btn" propertyid="{{ property.id }}" class="btn book-btn">Book Viewing</button>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </section>
+
+    <script>
+        const backBtn = document.querySelector('#back');
+        const bookViewingBtn = document.querySelector('#book-viewing-btn');
+        const backdrop = document.querySelector('.backdrop');
+        const successMessageModal = document.querySelector('.modal.success-message-modal');
+        const modal = document.querySelector('.modal.booking-modal');
+
+
+        console.log(bookViewingBtn);
+
+        backBtn.addEventListener('click',evt => {
+            window.location.href = '{{ request.META.HTTP_REFERER }}';
+        });
+
+        bookViewingBtn.addEventListener('click', (evt) => {
+            console.log('clicked');
+            selectedProperty = parseInt(evt.target.getAttribute('propertyid'));
+            backdrop.classList.remove('backdrop-hidden');
+            modal.classList.remove('modal-hidden');    
+        });
+    </script>
 {% endblock %}
