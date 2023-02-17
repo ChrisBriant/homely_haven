@@ -67,7 +67,6 @@ def view_property(request,property_id):
     file_list = [f for f in os.listdir(home_images_dir) if os.path.isfile(os.path.join(home_images_dir, f))]
     selected_file = random.sample(file_list,1)[0]
     room_src = settings.MEDIA_URL + 'rooms/' + selected_file
-    print(request.META['HTTP_REFERER'])
     return render(request, 'website/property.html', {'property':property, 'room_src':room_src})
 
 

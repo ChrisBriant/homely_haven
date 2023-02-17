@@ -441,6 +441,18 @@ main {
     z-index: 100;
 }
 
+.slide .property-title-banner a {
+    position: relative;
+    z-index: 100;
+    color: #fff;
+    text-decoration: none;
+}
+
+.slide .property-title-banner a:hover {
+    color: var(--link-color-hover);
+}
+
+
 .news-card {
     flex: none;
     display: flex;
@@ -495,6 +507,7 @@ main {
     color: white;
     border: none;
     cursor: pointer;
+    width: 140px;
 }
 
 .previous-button {

@@ -5,6 +5,7 @@
             <img src="{{ MEDIA_URL }}/{{ property.picture }}" alt="{{ property.address_line_one }}">
             <div class="property-title-banner">
                 <p>{{ property.address_line_one }}</p>
+                <a href="/viewproperty/{{ property.id }}">View Property</a>
             </div>
         </div>
     {% endfor %}
@@ -12,6 +13,7 @@
         <img src="{{ MEDIA_URL }}/{{ properties.first.picture }}" alt="{{ properties.first.address_line_one }}">
         <div class="property-title-banner">
             <p>{{ properties.first.address_line_one }}</p>
+            <a href="/viewproperty/{{ property.id }}">View Property</a>
         </div>
     </div>
 </div>

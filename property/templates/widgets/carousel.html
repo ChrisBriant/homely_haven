@@ -60,9 +60,6 @@
         //remove the last slide
         let currentSlide =await slides.children[index].cloneNode(true);
         lastSlide = slides.removeChild(slides.children[slides.children.length-1]);
-        if(slides.children[index] === lastSlide) {
-            console.log('The last slide is the same as the current one');
-        }
         //get the current slide
         //remove previous slides and add to the end
         for(i=0;i<index;i++) {
