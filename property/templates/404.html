@@ -1,8 +1,16 @@
 {% extends "main.html" %}
 
 {% block content %}
-    <div class="error-page">
-        <h1>Error 404</h1>
-        <p>Sorry, this resource cannot be found.</p>
+    <div  class="confirm-dialog presentation-panel">
+        <div class="side-panel">
+            <div class="confirm-text">
+                <h1>Error 404</h1>
+                <p>Sorry, this resource cannot be found.</p>
+            </div>
+            <div class="side-image">
+                {% load static %}
+                <img src="{%static 'custom/img/property_graphic.png'%}" alt="property graphic">
+            </div>
+        </div>
     </div>
 {% endblock %}

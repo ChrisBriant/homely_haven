@@ -6,42 +6,48 @@
 
 {% include "dialogs/tandcdialog.html" %}
 
-<div class="auth-dialog">
-    {% if is_assignment_taker %}
-        <h1>Register as Person with Assignment</h1>
-    {% else %}
-        <h1>Register to Offer to Do Assignments</h1>
-    {% endif %}
-    <form action=""  autocomplete="on" method="POST" class="capture-form">
-      {% csrf_token %}
-      <div class="form-group">
-          <label for="username">Username:</label>
-          {{ form.name }}
-      </div>
-      <div class="form-group">
-          <label for="email">Email:</label>
-          {{ form.email }}
-      </div>
-      <div class="form-group">
-          <label for="pass">Password:</label>
-          {{ form.password }}
-      </div>
-      <div class="form-group">
-          <label for="passchk">Confirm password:</label>
-          {{ form.passwordchk }}
-      </div>
-      {% include 'capcha.html' %}
-      <div class="spacer"></div>
-      <div class="form-inline">
-          <label for="terms"><small>I have read and agree to to the <a id="clicktandc" class="linkonblue" href="/termsandconditions" target="_blank">terms and conditions</a></small></label>
-          <input type="checkbox" name="terms" id="terms" required/>
-      </div>
-      <p class="form-error-message"></p>
-      <div class="btn-group">
-          <button id="submit-register" class="btn btn-primary submit-btn" type="submit">Submit</button>
-      </div>
-    </form>
-
+<div  class="register-dialog presentation-panel">
+    <div class="main-form">
+        <h1>Register</h1>
+        {% include 'messages.html' %}
+        <form action=""  autocomplete="on" method="POST" class="capture-form">
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="username">Username:</label>
+              {{ form.name }}
+          </div>
+          <div class="form-group">
+              <label for="email">Email:</label>
+              {{ form.email }}
+          </div>
+          <div class="form-group">
+              <label for="pass">Password:</label>
+              {{ form.password }}
+          </div>
+          <div class="form-group">
+              <label for="passchk">Confirm password:</label>
+              {{ form.passwordchk }}
+          </div>
+          <div class="form-inline">
+            <label for="terms"><small>I have read and agree to to the <a id="clicktandc" class="linkonblue" href="/termsandconditions" target="_blank">terms and conditions</a></small></label>
+            <input type="checkbox" name="terms" id="terms" required/>
+        </div>
+          <p class="form-error-message"></p>
+          <div class="btn-group">
+              <button id="submit-register" class="btn btn-primary submit-btn" type="submit">Submit</button>
+          </div>
+        </form>
+    </div>
+    <div class="side-panel">
+        <div class="side-info">
+            {% include 'capcha.html' %}
+            <div class="spacer"></div>
+        </div>
+        <div class="side-image">
+            {% load static %}
+            <img src="{%static 'custom/img/property_graphic.png'%}" alt="property graphic">
+        </div>
+    </div>
 </div>
 
 <script>

@@ -3,10 +3,21 @@
 
 
 {% block content %}
+<div  class="confirm-dialog presentation-panel">
 
+    <div class="side-panel">
+        <div class="confirm-text">
+            <p>Congratulations! You are now signed up.</p>
+            <p>Click <a href="/accounts/signin">here</a> to sign in.</p>
+        </div>
+        <div class="side-image">
+            {% load static %}
+            <img src="{%static 'custom/img/property_graphic.png'%}" alt="property graphic">
+        </div>
+    </div>
+</div>
 <div class="confirm-message">
-    <h1>Congratulations! You are now signed up.</h1>
-    <p>Click <a href="/accounts/signin">here</a> to sign in.</p>
+
 </div>
 
 {% endblock %}

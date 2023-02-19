@@ -1,18 +1,29 @@
 {% extends "main.html" %}
 
 {% block content %}
-<div  class="auth-dialog">
-    <h1>Forgot Password</h1>
-    <p><strong>Enter your email address below and we will send you a reset password link.</strong></p>
-    <form action=""  autocomplete="on" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="id_username">{{ form.email.label }}</label>
-            {{ form.email }}
+<div  class="login-dialog presentation-panel">
+    <div class="main-form">
+        <h1>Forgot Password</h1>
+        {% include 'messages.html' %}
+        <p><small>Enter your email address below and we will send you a reset password link.</small></p>
+        <form action=""  autocomplete="on" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+            <div class="btn-group">
+                <button id="submit-register" class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="side-panel">
+        <div class="side-image">
+            {% load static %}
+            <img src="{%static 'custom/img/property_graphic.png'%}" alt="property graphic">
         </div>
-        <div class="btn-group">
-            <button id="submit-register" class="btn btn-primary" type="submit">Submit</button>
-        </div>
-    </form>
+    </div>
 </div>
+
+
 {% endblock %}

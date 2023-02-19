@@ -20,16 +20,14 @@ def signin(request):
             if user:
                 if user.is_enabled:
                     auth_login(request,user)
-                    #return HttpResponseRedirect('/calendar/mycalendars')
+                    return HttpResponseRedirect('/')
                 else:
                     messages.error(request,'Your account is not enabled.')
-                    return HttpResponseRedirect('/')
             else:
                 messages.error(request,'Username or password not correct.')
-                return HttpResponseRedirect('/')
         else:
             print(form.errors)
-    return HttpResponseRedirect('/profile/')
+    return render(request,'accounts/login.html',{'form' : form})
 
 def register(request):
     is_assignment_taker = True
@@ -52,6 +50,7 @@ def register(request):
                     user.hash = hex(random.getrandbits(128))
                     user.save()
                     url = settings.BASE_URL + "/accounts/confirm/" + user.hash + "/"
+                    print('URL IS',url)
                     #response = send_confirm_email(user.email,user.name,url)
                     messages.success(request,'Congratulations, you have successfully registered! Please check your email for the confirmation link and follow the instructions.')
                 except IntegrityError as e:
@@ -69,9 +68,7 @@ def signout(request):
     logout(request)
     if next_url:
         return HttpResponseRedirect(settings.BASE_URL + next_url)
-    else:
-        form = SignInForm()
-        return render(request,'website/home.html',{'form': form,})
+    return HttpResponseRedirect('/')
 
 def confirm(request,confirm_code):
     try:
@@ -96,6 +93,7 @@ def forgot(request):
                 account.save()
                 url = settings.BASE_URL + "/accounts/reset/" + account.hash + "/"
                 #send_password_reset_email(account.email,account.name,url)
+                print('URL IS',url)
                 messages.success(request,'An email with a password reset link has been sent, please check your email and click on the link to change your password.')
             except Exception as e:
                 return render(request,'404.html')
@@ -113,6 +111,7 @@ def reset(request,confirm_code):
                 account.password = new_password
                 account.hash = ''
                 account.save()
+                messages.success(request,'You have successfully reset your password. You can now log in below.')
                 return HttpResponseRedirect('/accounts/signin')
             except Exception as e:
                 messages.error(request,'An error occurred when trying to reset your password.')

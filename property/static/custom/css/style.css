@@ -10,6 +10,12 @@
     --footer-bg :  #282828;
     --link-color : #3b7522;
     --link-color-hover : #58af33;
+    --h1-color : #0072c6;
+    --side-panel-bg :  #ffedce;
+    --error-bg: #f0b9b9;
+    --error-text: #2e0000;
+    --success-bg: #b9f0bf;
+    --success-text: #002e15;
 }
 
 * {
@@ -35,6 +41,10 @@ h1 {
 
 main {
     min-height: 78vh;
+}
+
+a {
+    text-decoration: none;
 }
 
 
@@ -214,6 +224,145 @@ main {
     margin-bottom: 30px;
  }
  
+/* LOGIN PAGES  */
+
+.login-dialog.presentation-panel, .register-dialog.presentation-panel {
+    /* width: 60%; */
+    margin: 1rem auto;
+    max-width: 600px;
+    padding: 0;
+}
+
+.confirm-dialog.presentation-panel {
+    margin: 1rem auto;
+    max-width: 400px;
+    padding: 0;
+}
+
+.confirm-dialog.presentation-panel .confirm-text {
+    margin: auto;
+}
+
+.confirm-dialog.presentation-panel .confirm-text p{
+    text-align: center;
+}
+
+.register-dialog.presentation-panel {
+    max-width: 700px;
+}
+
+.login-dialog.presentation-panel h1, .register-dialog.presentation-panel h1 {
+    text-align: left;
+    color: var(--h1-color);
+}
+
+.login-dialog, .register-dialog {
+    flex: none;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.login-dialog .main-form {
+    max-width: 300px;
+}
+
+.main-form {
+    padding: 10px;
+
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    background-color: var(--side-panel-bg);
+}
+
+.side-panel .side-info {
+    padding: 10px;
+}
+
+.side-info p{
+    text-align: left;
+}
+
+.side-panel .side-image {
+    height: 14rem;
+    width: 14rem;
+}
+
+/* control when less than max width  */
+
+@media only screen and (max-width: 600px) {
+    .login-dialog {
+        flex-direction: column-reverse;
+        justify-content: center;
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .register-dialog {
+        flex-direction: column-reverse;
+        justify-content: center;
+        width: 90%;
+    }
+
+    .side-info {
+        width: 100%;
+    }
+
+    .side-info p {
+        text-align: center;
+    }
+}
+
+/* messages  */
+
+.messages {
+    max-width: 280px;
+    margin: auto;
+}
+
+.messages ul {
+    list-style-type: none;
+}
+
+.messages .alert {
+    padding: 6px;
+}
+
+.alert-danger {
+    color: var(--error-text);
+    background: var(--error-bg);
+    border: 1px solid var(--error-text);
+    border-radius: 6px;
+}
+
+
+.alert-success {
+    color: var(--success-text);
+    background: var(--success-bg);
+    border: 1px solid var(--success-text);
+    border-radius: 6px;
+}
+
+/* forms  */
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group input, .canvas-area input {
+    margin: 6px 10px;
+    padding: 4px;
+}
 
 
 /* DIALOGS  */
@@ -348,8 +497,6 @@ main {
 
 #calendarDays .day.spentday p{
     background: linear-gradient(to bottom right, var(--calendar-spent-day-bg) 47%, red 50%, var(--calendar-spent-day-bg) 53%);
-    /* border: 2px rgba(0, 0, 0, 0) solid; */
-    /* color : #fff; */
 }
 
 #calendarDays .day.spentday {
@@ -385,6 +532,13 @@ main {
     color: #fff;
 }
 
+/* capcha  */
+
+.canvas-area {
+    display: flex;
+    flex-direction: column;
+}
+
 /* carousel  */
 
 .carousel {
@@ -416,15 +570,6 @@ main {
     object-fit: cover;
 }
 
-/* .slide p {
-    position: absolute;
-    bottom: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-} */
 
 .slide .property-title-banner {
     position: absolute;
@@ -475,26 +620,6 @@ main {
     flex-direction: column;
 }
 
-
-
-
-/* .slide p::after {
-    position: absolute;
-    left: 0;
-    content: '';
-    background-color: rgba(0, 0, 0);
-    height: 100%;
-    width: 100%;
-} */
-
-/* @keyframes slides {
-    0% {
-        transform: translateX(0px);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-} */
 
 .previous-button,
 .next-button {

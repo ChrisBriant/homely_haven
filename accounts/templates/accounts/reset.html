@@ -4,22 +4,32 @@
 
 {% block content %}
 
-<div class="auth-dialog">
-    <h1>Reset Password</h1>
-    <form action=""  autocomplete="on" method="POST">
-      {% csrf_token %}
-      <div class="form-group">
-          <label for="pass">Password:</label>
-          {{ form.password }}
-      </div>
-      <div class="form-group">
-          <label for="passchk">Confirm password:</label>
-          {{ form.passwordchk }}
-      </div>
-      <div class="btn-group">
-          <button id="submit-password-reset" class="btn btn-primary" type="submit">Reset</button>
-      </div>
-    </form>
+<div class="login-dialog presentation-panel">
+    <div class="main-form">
+        <h1>Reset Password</h1>
+        {% include 'messages.html' %}
+        <form action=""  autocomplete="on" method="POST">
+            {% csrf_token %}
+            <p>Enter a new password.</p>
+            <div class="form-group">
+                <label for="id_password">Password:</label>
+                {{ form.password }}
+            </div>
+            <div class="form-group">
+                <label for="id_password">Confirm Password:</label>
+                {{ form.passwordchk }}
+            </div>
+            <div class="btn-group">
+                <button id="submit-register" class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="side-panel">
+        <div class="side-image">
+            {% load static %}
+            <img src="{%static 'custom/img/property_graphic.png'%}" alt="property graphic">
+        </div>
+    </div>
 </div>
 
 {% endblock %}
