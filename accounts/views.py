@@ -6,7 +6,7 @@ from django.middleware import csrf
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.db import IntegrityError
-#from adventcalendar.messaging import send_confirm_email, send_password_reset_email
+from.messaging import send_confirm_email, send_password_reset_email
 from .forms import *
 import re
 
@@ -50,8 +50,8 @@ def register(request):
                     user.hash = hex(random.getrandbits(128))
                     user.save()
                     url = settings.BASE_URL + "/accounts/confirm/" + user.hash + "/"
-                    print('URL IS',url)
-                    #response = send_confirm_email(user.email,user.name,url)
+                    #print('URL IS',url)
+                    response = send_confirm_email(user.email,user.name,url)
                     messages.success(request,'Congratulations, you have successfully registered! Please check your email for the confirmation link and follow the instructions.')
                 except IntegrityError as e:
                     print(e)
@@ -92,8 +92,8 @@ def forgot(request):
                 account.hash = hex(random.getrandbits(128))
                 account.save()
                 url = settings.BASE_URL + "/accounts/reset/" + account.hash + "/"
-                #send_password_reset_email(account.email,account.name,url)
-                print('URL IS',url)
+                send_password_reset_email(account.email,account.name,url)
+                #print('URL IS',url)
                 messages.success(request,'An email with a password reset link has been sent, please check your email and click on the link to change your password.')
             except Exception as e:
                 return render(request,'404.html')
