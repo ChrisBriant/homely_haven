@@ -409,9 +409,20 @@ a {
     flex-direction: column;
 }
 
-.modal-body {
-    /* margin: 4px 0; */
-    /* background: var(--modal-background); */
+.modal.tandc-dialog {
+    max-height: 80vh;
+}
+
+.modal.tandc-dialog  .modal-body{
+    overflow-y: scroll;
+}
+
+.modal.tandc-dialog  .modal-body p, 
+.modal.tandc-dialog  .modal-body h2, 
+.modal.tandc-dialog  .modal-body h3,
+.modal.tandc-dialog  .modal-body ul li 
+{
+    padding: 10px;
 }
 
 /* calendar widget */

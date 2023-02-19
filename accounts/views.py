@@ -6,7 +6,8 @@ from django.middleware import csrf
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.db import IntegrityError
-from.messaging import send_confirm_email, send_password_reset_email
+from .messaging import send_confirm_email, send_password_reset_email
+from propertyadmin.models import Customer
 from .forms import *
 import re
 
@@ -49,6 +50,10 @@ def register(request):
                     #Get joining confirmation information over to user
                     user.hash = hex(random.getrandbits(128))
                     user.save()
+                    #Add the user as a customer
+                    Customer.objects.create(
+                        user=user
+                    )
                     url = settings.BASE_URL + "/accounts/confirm/" + user.hash + "/"
                     #print('URL IS',url)
                     response = send_confirm_email(user.email,user.name,url)
