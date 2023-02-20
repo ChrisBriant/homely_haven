@@ -20,12 +20,13 @@
 </style>
 
 <body>
+    {% if request.user.id %}
+        {% include 'navauthed.html' %}
+    {% else %}
+        {% include 'navunauthed.html' %}
+    {% endif %}
     <header>
-        {% if request.user.id %}
-            {% include 'navauthed.html' %}
-        {% else %}
-            {% include 'navunauthed.html' %}
-        {% endif %}
+
         {% if request.resolver_match.url_name == 'home' %}
             <!-- hero  -->
             <div class="hero-area">
@@ -42,6 +43,43 @@
     <footer>
         <p>Homely Haven &copy; {% now "Y" %}</p>
     </footer>
+
+    <script>
+        // make the navbar fixed when scrolled down
+        window.onscroll = function() {
+          const navbar = document.querySelector(".navbar");
+          if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            navbar.classList.add("sticky");
+          } else {
+            navbar.classList.remove("sticky");
+          }
+        };
+
+        //smoth scrolling
+        //Get all links
+        const links = document.querySelectorAll('.navbar ul li a');
+
+        //Loop through each link
+        links.forEach(function(link){
+            //Add click listener
+            link.addEventListener('click', function(e){
+                if(link.href.includes('#') && window.location.href.split('/').length <= 4) {
+                    console.log('stinky linky',link.href.split('#'), window.location.href.split('/'));
+                    const sectionId = '#' + link.href.split('#')[1];
+                    //Prevent default scroll
+                    e.preventDefault();
+                    //Get section element
+                    const section = document.querySelector(sectionId);
+                    //Scroll to section
+                    window.scrollTo({
+                        top: section.offsetTop - 100,
+                        behavior: 'smooth',
+                    });
+                }
+   
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 :root {
-    --nav-color:#654325;
+    --nav-color:#8b7748;
     --modal-background: #ffedce;
     --modal-panel-background: #e0ffd3;
     --list-item-background:#daffca;
@@ -50,11 +50,23 @@ a {
 
 /* Navigation  */
 .navbar {
+    /* position: sticky;
+    top: 0;
+    left: 0; */
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-between; */
+    background: var(--nav-color);
+    padding: 2px;
+    /* height: 8vh; */
+    z-index: 300;
+    padding: 6px 0;
+}
+
+.navbar .nav-area {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: var(--nav-color);
-    padding: 2px;
 }
 
 .navbar ul{
@@ -77,9 +89,16 @@ a {
     cursor: pointer;
 }
 
+.sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
 .search-container {
     display: flex;
     align-items: center;
+    padding: 0 6px;
  }
  .search-input {
     width: 100%; 
@@ -179,13 +198,17 @@ a {
  /* home page  */
 
  .presentation-panel {
-    padding: 20px;
+    /* padding: 20px; */
  }
 
  .presentation-panel p, .presentation-panel h1, .presentation-panel h2 {
     margin: 10px 0;
     text-align: center;
  }
+
+  .presentation-panel .carousel {
+    margin: 10px auto;
+  }
 
  /* search result page  */
 
@@ -355,6 +378,7 @@ a {
 .form-group {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
@@ -617,8 +641,10 @@ a {
     align-items: flex-start;
 }
 
+
 .news-card:nth-child(odd) {
     flex-direction: row-reverse;
+    background-color: var(--modal-background);
 }
 
 .news-image {
@@ -683,4 +709,25 @@ footer {
     text-align: center;
     padding: 2rem;
     margin-top: 1rem;
+}
+
+/* RESPONSIVE  */
+
+@media only screen and (max-width: 620px) {
+    .navbar .nav-area {
+        flex-direction: column-reverse;
+    }
+
+    .navbar .nav-area ul {
+        text-align: center;
+        flex-direction: column;
+    }
+
+
+}
+
+@media only screen and (max-width: 550px) {
+    .carousel {
+        display: none;
+    }
 }
