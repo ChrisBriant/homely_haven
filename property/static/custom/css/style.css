@@ -10,6 +10,7 @@
     --footer-bg :  #282828;
     --link-color : #3b7522;
     --link-color-hover : #58af33;
+    --nav-link-hover : #130069;
     --h1-color : #0072c6;
     --side-panel-bg :  #ffedce;
     --error-bg: #f0b9b9;
@@ -67,6 +68,11 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.navbar .nav-area a:hover {
+    color: var(--nav-color-hover);
+    transition: color 1s;
 }
 
 .navbar ul{
@@ -223,6 +229,10 @@ a {
     margin: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
  }
+
+ /* .property-card:first-child {
+    margin: 0;
+ } */
 
  .property-card .property-image {
     width: 100%;
@@ -584,6 +594,12 @@ a {
     position: relative;
 }
 
+/* hide the alternate carousel   */
+
+.presentation-panel.carousel-alt {
+    display: none;
+}
+
 .slides {
     display: flex;
     position: absolute;
@@ -647,14 +663,23 @@ a {
     background-color: var(--modal-background);
 }
 
-.news-image {
+.news-card:nth-child(even) .news-image {
     width: 30%;
     height: 20rem;
+    margin-right: auto;
 }
+
+.news-card:nth-child(odd) .news-image {
+    width: 30%;
+    height: 20rem;
+    margin-left: auto;
+}
+
 .news-card .news-article {
     width: 60%;
     display: flex;
     flex-direction: column;
+    padding: 10px;
 }
 
 
@@ -723,11 +748,50 @@ footer {
         flex-direction: column;
     }
 
+    .property-results {
+        grid-template-columns: 1fr 1fr;
+        margin: 0;
+    }
+
+    .paginator {
+        width: 80%;
+    }
 
 }
 
 @media only screen and (max-width: 550px) {
     .carousel {
         display: none;
+    }
+
+    .presentation-panel.carousel-alt {
+        display: block;
+    }
+
+    .presentation-panel {
+        margin: 0;
+    }
+
+    .paginator {
+        width: 90%;
+    }
+
+    .modal.booking-modal {
+        width: 100%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .property-results {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+@media only screen and (max-width: 340px) {
+    #calendarDays div {
+        padding: 0 !important; 
     }
 }
